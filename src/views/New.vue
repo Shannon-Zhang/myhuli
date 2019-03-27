@@ -1,75 +1,108 @@
 <template>
     <div class="new_box">
         <header-new :flag='flag'></header-new>
-        <div class="swiper"></div>
+        <div class="swiper_box">
+            <Swiper :list='bannerList'></Swiper>
+        </div>
         <div class="content">
-            <ul>
-                <li class="syd" @click="$router.push('/syd')">
+            <ul class="product">
+                <li v-for="item in newAry" :class="item.class" @click="$router.push(`/${item.class}`)" :key="item.id">
                     <div class="left">
-                        <img src="../assets/images/new_content_01.png" alt="">
+                        <img :src="item.pic" alt="">
                     </div>
                     <div class="right">
-                        <h3 class="title">网贷</h3>
+                        <h3 class="title">{{item.title}}</h3>
                         <p class="desc">
-                            搜易贷是搜狐集团（NASDAQ：SOHU）旗下的网络借贷信息中介服务平台，中国互联网金融协会理事单位，于2014年9月上线。
-                            搜易贷以“让金融更简捷”为使命，通过大数据、人工智能、机器学习、区块链等领先科技进行金融服务创新，提升金融服务的
-                            运营效率和用户体验，让所有普通的个人用户和小微商户都能享受公平、高效和便捷的金融服务。
-                        </p>
-                    </div>
-                </li>
-                <li class="xh" @click="$router.push('/xh')">
-                    <div class="left">
-                        <img src="../assets/images/new_content_02.png" alt="">
-                    </div>
-                    <div class="right">
-                        <h3 class="title">消费分期 信用借款</h3>
-                        <p class="desc"> 
-                            狐狸金服金融科技集团旗下的信用借款咨询服务平台，通过人工智能、大数据风控技术进行金...
-                        </p>
-                    </div>
-                </li>
-                <li class="hlph" @click="$router.push('/hlph')">
-                    <div class="left">
-                        <img src="../assets/images/new_content_03.png" alt="">
-                    </div>
-                    <div class="right">
-                        <h3 class="title">融资服务</h3>
-                        <p class="desc">       
-                            狐狸金服金融科技集团旗下的综合融资信息服务平台，致力于用科技创新手段，为用户提供透...
+                            {{item.desc}}
                         </p>
                     </div>
                 </li>
             </ul>
+            <div class="trustHuli">
+                <h2 class="banner">
+                    <span class="before"></span>
+                    <span class="title">信任狐狸金服</span> 
+                    <span class="after"></span>
+                </h2>
+                <ul class="trust">
+                    <li v-for="item in newAry2" :key="item.id">
+                        <div class="left">
+                            <img :src="item.pic" alt="">
+                        </div>
+                        <div class="right">
+                            <p class="title">{{item.title}}</p>
+                            <p class="desc">
+                                {{item.desc}}
+                                <br/>
+                                {{item.desc2}}
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <footer>
+                <div class="contact">
+                    <div class="left">
+                        <img src="../assets/images/new_content2_06.png" alt="">
+                    </div>
+                    <div class="right">
+                        <p class="service_title">服务时间：周一至周日(9:00-18:00)</p>
+                        <p class="tel">400-817-8877</p>
+                        <p class="warning">市场有风险 选择需谨慎</p>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p class="company">狐狸金服（北京）信息科技有限公司</p>
+                    <p class="contact">联系电话：010-56372888 010-56372889</p>
+                    <p class="copyright">Copyright@2019 Fox Fintech Group. All Rights Reserved.</p>
+                    <p class="register">京ICP备16056530号-2</p>
+                </div>
+            </footer>
         </div> 
     </div>
 </template>
-
 <script>
-import headerNew from '@/common/Header_new.vue'
-    export default {
-        data() {
-            return {
-                flag:false
-            }
-        },
-        components:{
-            headerNew
+// ../assets/images/new_content_01.png
+import headerNew from '@/common/Header_new.vue';
+import Swiper from '@/common/Swiper.vue';
+export default {
+    data() {
+        return {
+            flag:false
         }
+    },
+    created() {
+        this.$store.dispatch('getNewAry');
+        this.$store.dispatch('getNewAry2');
+        this.$store.dispatch('getBannerList');
+    },
+    computed: {
+        bannerList(){
+            return this.$store.state.bannerList;
+        },
+        newAry(){
+            return this.$store.state.newAry;
+        },
+        newAry2(){
+            return this.$store.state.newAry2;
+        }
+    },
+    components:{
+        headerNew, Swiper
     }
+}
 </script>
 
 <style scoped lang='less'>
     .new_box{
         width: 100%;
-        .swiper{
+        .swiper_box{
             width: 100%;
-            height: 6rem;
-            background: url('../assets/images/new_banner01.png') no-repeat;
-            background-size:cover;
+            height: 7.5rem;
         }
         .content{
             width: 100%;
-            ul{
+            ul.product{
                 width: 9.3rem;
                 margin: 0.4rem auto;
                 li{
@@ -130,6 +163,117 @@ import headerNew from '@/common/Header_new.vue'
                 li.hlph .left{
                     background-image:linear-gradient(-180deg,#0066c4,#005bae);                     
                 }
+            }
+            .trustHuli{
+                width: 100%;
+                background-color: #eee;
+                padding-top: 0.4rem;
+                .banner{
+                    background: #fff;
+                    height: 1.86666667rem;
+                    line-height: 1.86666667rem;
+                    width: 100%;
+                    text-align: center;
+                }
+                span.title{
+                    display: inline-block;
+                    font-size: .45333333rem;
+                    color: #245af0;
+                    margin: 0 0.2rem;
+                    font-weight: 500;
+                }
+                span.before{
+                    display: inline-block;
+                    width: 1rem;
+                    height: 0.4rem;
+                    background: url('../assets/images/new_content2_logo1.png') no-repeat;
+                    background-size: contain;
+                }
+                span.after{
+                    display: inline-block;
+                    width: 0.8rem;
+                    height: 0.4rem;
+                    background: url('../assets/images/new_content2_logo2.png') no-repeat;
+                    background-size: cover;
+                }
+                ul.trust{
+                    background-color: white;
+                    width: 100%;
+                    li{
+                        width: 100%;
+                        overflow: hidden;
+                        vertical-align: middle;
+                        padding: 0.2rem 0;
+                        .left{
+                            float: left;
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            line-height: 1.5rem;
+                            margin:0 0.7rem;
+                            vertical-align: baseline;
+                            img{
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                        .right{
+                            float: left;
+                            text-align: left;
+                            border-bottom: 1px solid #f3f5f8;
+                            .title{
+                                font-size: 0.4rem;
+                                margin: 0 0 .08rem;
+                            }
+                            .desc{
+                                font-size: 0.32rem;
+                                color: #666;
+                                margin: 0 .4rem .46666667rem 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        footer{
+            background-color: #f3f5f8;
+            div.contact{
+                width: 100%;
+                height: 2.30667rem;
+                line-height: 0.5rem;
+                padding: 0.4rem 0;
+                box-sizing: border-box;
+                .left{
+                    float: left;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    line-height: 1.5rem;
+                    margin:0 0.7rem;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .right{
+                    float: left;
+                    text-align: left;
+                    color:#666;
+                    .service_title{
+                        font-size: 0.32rem;
+                    }
+                    .tel{
+                        font-size: 0.48rem;
+                    }
+                    .warning{
+                        font-size: 0.32rem
+                    }
+                }
+            }
+            div.copyright{
+                border:1px solid #e0e2e6;
+                text-align: left;
+                padding: 0.4rem 0 0.05rem 0.7rem;
+                font-size: .26666667rem;
+                color: #999;
             }
         }
     }

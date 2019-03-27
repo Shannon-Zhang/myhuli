@@ -1,7 +1,6 @@
 <template>
     <div>
-        <router-link to="/home">home</router-link>
-        CompanyIntro
+        惠投
     </div>
 </template>
 

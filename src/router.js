@@ -50,6 +50,14 @@ export default new Router({
       component:()=>import('./components/home/Home.vue')
     },
     {
+      path:'/login',
+      component:()=>import('./components/home/Login.vue')
+    },
+    {
+      path:'/register',
+      component:()=>import('./components/home/Register.vue')
+    },
+    {
       path:'/invest',
       redirect:'/invest/rry',
       component:()=>import('./components/invest/Invest.vue'),
@@ -60,17 +68,66 @@ export default new Router({
         },
         {
           path:'/invest/wd',
-          component:()=>import('./components/invest/Wd.vue')
+          component:()=>import('./components/invest/wd/Wd.vue'),
+          children:[
+            {
+              path:'/invest/wd/ztxm',
+              component:()=>import('./components/invest/wd/ztxm.vue')
+            },
+            {
+              path:'/invest/wd/ht',
+              component:()=>import('./components/invest/wd/ht.vue')
+            },
+            {
+              path:'/invest/wd/zrxm',
+              component:()=>import('./components/invest/wd/zrxm.vue')
+            }
+          ]
         },
         {
           path:'/invest/lc',
-          component:()=>import('./components/invest/Lc.vue')
+          redirect:'/invest/lc/hying',
+          component:()=>import('./components/invest/lc/Lc.vue'),
+          children:[
+            {
+              path:'/invest/lc/zr',
+              component:()=>import('./components/invest/lc/zr.vue')
+            },
+            {
+              path:'/invest/lc/hying',
+              component:()=>import('./components/invest/lc/hying.vue')
+            },
+            {
+              path:'/invest/lc/hyou',
+              component:()=>import('./components/invest/lc/hyou.vue')
+            },
+            {
+              path:'/invest/lc/hb',
+              component:()=>import('./components/invest/lc/hb.vue')
+            }
+          ]
         }
       ]
     },
     {
       path:'/companyIntro',
-      component:()=>import('./components/CompanyIntro.vue')
+      component:()=>import('./components/companyIntro/CompanyIntro.vue'),
+    },
+    {
+      path:'/aboutUs',
+      component:()=>import('./components/companyIntro/aboutUs.vue')
+    },
+    {
+      path:'/team',
+      component:()=>import('./components/companyIntro/team.vue')
+    },
+    {
+      path:'/media',
+      component:()=>import('./components/companyIntro/media.vue')
+    },
+    {
+      path:'/address',
+      component:()=>import('./components/companyIntro/address.vue')
     },
     {
       path: '/about',

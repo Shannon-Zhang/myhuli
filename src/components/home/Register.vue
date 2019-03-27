@@ -1,6 +1,6 @@
 <template>
     <div>
-        理财
+        Register page
     </div>
 </template>
 

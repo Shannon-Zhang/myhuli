@@ -1,17 +1,16 @@
 <template>
     <div class="header_box">
-        <div class="bar_box" ref="Elebar">
-            <div class="logo" ref="Elelogo"></div>
-            <div class="drop iconfont icon-liebiao" ref="Eledrop" click='drop'></div>
+        <div class="bar_box" ref="eleBar">
+            <div class="logo" ref="eleLogo"></div>
+            <div class="drop" ref="eleDrop" click='drop'>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
         </div>
-        <div 
-            v-text="title" 
-            class="banner" 
-            v-if="flag" 
-            :style="{backgroundImage:`url(${bgImg})`}"></div>
-        <div class="mask" ref="Elemask">
+        <div class="mask" ref="eleMask">
             <div class="close">
-                <i class="iconfont icon-guanbi" ref="Eleicon"></i>
+                <i class="iconfont icon-guanbi" ref="eleIcon"></i>
             </div>
             <ul class="menu">      
                 <li @click="jump('/new')">首页</li>
@@ -26,107 +25,79 @@
 </template>
 
 <script>
-    export default {
-        props:{
-            bgImg:{
-                default:''
-            },
-            flag:{
-                default:true
-            },
-            title:{
-                default:''
+export default {
+    data() {
+        return {
+            eleBar:'',
+            eleLogo:'',
+            eleDrop:'',
+            eleMask:'',
+            eleIcon:''
+        }
+    },
+    mounted() {
+        // 获取需要操作的元素
+        this.eleBar = this.$refs.eleBar;
+        this.eleLogo = this.$refs.eleLogo;
+        this.eleDrop = this.$refs.eleDrop;
+        this.eleMask = this.$refs.eleMask;
+        this.eleIcon = this.$refs.eleIcon;
+        // 给指定元素绑定事件
+        this.eleDrop.onclick = ()=>{
+            console.log('transform-drop');
+            this.eleMask.style.top = '0';
+        }
+        this.eleIcon.onclick = ()=>{
+            console.log('transform-up');
+            this.eleMask.style.top = '-20rem';
+        }
+        window.onscroll = ()=>{
+            let st = document.documentElement.scrollTop || document.body.scrollTop;
+            if (st<=95) {
+                this.eleBar.style.backgroundColor = `rgba(63, 128, 226, ${(1/95)*st})`;
+                this.eleLogo.className ='logo';
+                this.eleDrop.className = 'drop';
+            } else{
+                this.eleBar.style.backgroundColor = '#fff';
+                this.eleLogo.className = 'logo changeLogo';
+                this.eleDrop.className = 'drop changeDrop';
             }
-        },
-        mounted(){
-            console.log(111);
-            console.log(this.props.flag);
-        },
-        data() {
-            return {
-                Elebar:'',
-                Elelogo:'',
-                Eledrop:'',
-                Elemask:'',
-                Eleicon:''
-            }
-        },
-        mounted() {
-            // 获取需要操作的元素
-            this.Elebar = this.$refs.Elebar;
-            this.Elelogo = this.$refs.Elelogo;
-            this.Eledrop = this.$refs.Eledrop;
-            this.Elemask = this.$refs.Elemask;
-            this.Eleicon = this.$refs.Eleicon;
-            // 给指定元素绑定事件
-            this.Eledrop.onclick = ()=>{
-                console.log('transform-drop');
-                this.Elemask.style.top = '0';
-            }
-            this.Eleicon.onclick = ()=>{
-                console.log('transform-up');
-                this.Elemask.style.top = '-20rem';
-            }
-            window.onscroll = ()=>{
-                let st = document.documentElement.scrollTop || document.body.scrollTop;
-                if (st >= 80) {
-                    this.Elebar.style.backgroundColor = 'white';
-                    this.Elelogo.className ='logo changeLogo';
-                    this.Eledrop.className = 'drop iconfont icon-liebiao changeDrop';
-                } else if(st >=20){
-                    this.Elebar.style.backgroundColor = 'rgba(104, 138, 240, 0.3)';
-                    this.Elelogo.className ='logo';
-                    this.Eledrop.className = 'drop';
-                } else{
-                    this.Elebar.style.backgroundColor = 'transparent';
-                    this.Elelogo.className ='logo';
-                    this.Eledrop.className = 'drop iconfont icon-liebiao';
-                }
-            }
-        },
-        methods: {
-            jump(str){
-                let hashStr =location.hash.replace('#', '');
-                console.log(hashStr, str, str===hashStr);
-                if (str !== hashStr) {
-                    this.$router.push(str);
-                } else{
-                    this.Elemask.style.top = '-20rem';
-                }
+        }
+    },
+    methods: {
+        jump(str){
+            let hashStr =location.hash.replace('#', '');
+            console.log(hashStr, str, str===hashStr);
+            if (str !== hashStr) {
+                this.$router.push(str);
+            } else{
+                this.eleMask.style.top = '-20rem';
             }
         }
     }
+}
 </script>
 
 <style scoped lang='less'>
     .header_box{
         position: relative;
+        z-index: 10;
         top: 0;
         width: 100%;
         height: 100%;
         overflow: hidden;
-        .banner{
-            width: 100%;
-            height: 4.5rem;
-            line-height: 4.5rem;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            font-size: 0.56rem;
-            color: white;
-            text-align: center;
-        }
         .bar_box{
             position: fixed;
             top: 0;
             width: 100%;
+            box-sizing: border-box;
             background-color:transparent;
             .logo{
                 float: left;
-                width: 2rem;
-                height: 1.173rem;
-                line-height: 1.173rem;
-                margin: 0 0 0 0.2rem;
+                width: 2.35rem;
+                height: 0.9rem;
+                line-height: 0.9333rem;
+                margin: 0.15rem 0 0 0.4rem;
                 background: url('../assets/images/new_header_logo.png') no-repeat left;
                 background-size: 100% 100%;
             }
@@ -136,14 +107,19 @@
             }
             .drop{
                 float: right;
-                height: 1.173rem;
-                line-height: 1.173rem;
-                color: white;
-                font-size: 0.7rem;
-                margin-right: 0.2rem;
+                margin-top: 0.3rem;
+                .line{
+                    width: 0.45rem;
+                    height: 0.05rem;
+                    margin-bottom:0.12rem;
+                    background-color: white;
+                    margin-right: 0.4rem;
+                }
             }
             .changeDrop{
-                color: black;
+                .line{
+                    background-color: black;
+                }
             }
         }
         .mask{

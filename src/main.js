@@ -1,12 +1,18 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store/store';
 
-import './assets/animate.css'
-import './assets/common.css'
+import './assets/animate.css';
+import './assets/common.css';
+import 'swiper/dist/css/swiper.min.css';
 
-Vue.config.productionTip = false
+
+router.beforeEach((to,from,next)=>{
+  // debugger
+  next()
+})
+Vue.config.productionTip = false;
 
 new Vue({
   router,
